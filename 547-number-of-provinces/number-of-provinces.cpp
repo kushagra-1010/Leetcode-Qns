@@ -1,11 +1,11 @@
 class Solution {
 public:
-    void dfs(int st, vector<bool>& vis, vector<vector<int>>& isConnected) {
-        vis[st] = true;
+    void dfs(int node, vector<bool>& vis, vector<vector<int>>& adj) {
+        vis[node] = true;
 
-        for (int j = 0; j < isConnected[st].size(); j++) {
-            if (!vis[j] && isConnected[st][j] == 1) {  // check adjacency
-                dfs(j, vis, isConnected);
+        for(int& neighbor : adj[node]) {
+            if(!vis[neighbor]) {
+                dfs(neighbor, vis, adj);
             }
         }
     }
@@ -15,9 +15,21 @@ public:
         vector<bool> vis(n, false);
         int count = 0;
 
-        for (int i = 0; i < n; i++) {
-            if (!vis[i]) {
-                dfs(i, vis, isConnected);
+        // Build adjacency list
+        vector<vector<int>> adj(n);
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                if(isConnected[i][j] == 1 && i != j) {
+                    adj[i].push_back(j);
+                    adj[j].push_back(i);
+                }
+            }
+        }
+
+        // DFS
+        for(int i = 0; i < n; i++) {
+            if(!vis[i]) {
+                dfs(i, vis, adj);
                 count++;
             }
         }

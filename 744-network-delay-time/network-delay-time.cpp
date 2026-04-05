@@ -20,8 +20,6 @@ public:
             int node = pq.top().second;
             pq.pop();
 
-            if(dis > dist[node]) continue;
-
             for(auto &nbr : adj[node]){
                 int next = nbr.first;
                 int weight = nbr.second;
